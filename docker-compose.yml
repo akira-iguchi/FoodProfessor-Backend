@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+  api:
+    build:
+      context: ./api/
+      dockerfile: Dockerfile
+    command: /bin/sh -c "rm -f /food_professor/tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - ./api:/food_professor
+      - ./api/vendor/bundle:/food_professor/vendor/bundle
+    environment:
+      TZ: Asia/Tokyo
+      RAILS_ENV: development
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+      - chrome
+
+  chrome:
+    image: selenium/standalone-chrome:latest
+    ports:
+      - 4444:4444
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ${DATABASE}
+      MYSQL_USER: ${MYSQLUSER}
+      MYSQL_PASSWORD: ${MYSQLPASS}
+      MYSQL_ROOT_PASSWORD: ${MYSQLROOTPASS}
+      TZ: "Asia/Tokyo"
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+
+volumes:
+  db-data:
