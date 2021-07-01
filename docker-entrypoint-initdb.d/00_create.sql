@@ -1,0 +1,2 @@
+CREATE DATABASE FoodProfessor_test;
+CREATE DATABASE FoodProfessor_production;
