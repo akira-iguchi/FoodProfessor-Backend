@@ -1,13 +1,12 @@
-# Food Professor
+# Food Professor BackEnd
 
-### 環境構築
+### 環境構築(Back 用)
 
 1. (任意のディレクトリ下で)`git clone REPO_URL`
 2. `docker-compose build`
-3. `docker-compose run front sh -c 'npx create-react-app react-app --template typescript'`
-4. `docker-compose up -d`
+3. `docker-compose up -d`
 
-   **すぐに手順 5 にいかないこと**
+   **すぐに手順 4 にいかないこと**
    db コンテナで、`docker-entrypoint-initdb.d`配下のスクリプトが完了されてから手順 5 を実施
 
 ```
@@ -22,5 +21,5 @@ $ docker logs foodprofessor_db_1 --follow
 
 上記のように、`.sql`ファイルが実行された表示が出れば完了
 
-5. `docker-compose run api bundle exec rake db:create`
-6. DONE!!
+4. `docker-compose run api bundle exec rake db:create`
+5. DONE!!
