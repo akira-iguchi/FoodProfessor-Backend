@@ -5,7 +5,7 @@ class Recipe < ApplicationRecord
   has_many :purposes, dependent: :destroy
   has_many :comments, dependent: :destroy
 
-  mount_uploader :user_image, ImageUploader
+  mount_uploader :recipe_image, ImageUploader
 
   validates :user_id, presence: true
   validates :folder_id, presence: true

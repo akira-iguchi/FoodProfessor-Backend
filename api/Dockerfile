@@ -35,8 +35,6 @@ COPY Gemfile.lock /food_professor/Gemfile.lock
 
 ENV LANG="ja_JP.UTF-8"
 
-RUN gem install rails -v 6.1.3
-
 RUN gem update bundler && bundle install
 RUN gem install rails -v 6.1.3
 
