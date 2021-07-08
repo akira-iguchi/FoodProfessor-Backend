@@ -14,5 +14,7 @@ Rails.application.routes.draw do
 
     resources :follows, only: %i[create destroy]
 
+    resources :recipes, only: [:show]
+
   end
 end
