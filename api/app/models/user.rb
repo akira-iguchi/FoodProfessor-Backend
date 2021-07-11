@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   mount_uploader :profile_image, ImageUploader
 
-  validates :first_name, { presence: true, length: { maximum: 10 } }
+    validates :first_name, { presence: true, length: { maximum: 10 } }
   validates :last_name, { presence: true, length: { maximum: 10 } }
 
   before_save { email.downcase! }
