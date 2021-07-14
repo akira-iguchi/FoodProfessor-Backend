@@ -11,9 +11,14 @@ Rails.application.routes.draw do
       resources :sessions, only: %i[index]
     end
 
-    resources :users, only: %i[show followings followers] do
+    resources :users, only: %i[show] do
       resources :folders, only: %i[create update destroy]
       resources :comments, only: %i[create destroy]
+      member do
+        get :followings
+        get :followers
+        get :folders
+      end
     end
 
     resources :follows, only: %i[create destroy]

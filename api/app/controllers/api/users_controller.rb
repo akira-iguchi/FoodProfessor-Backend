@@ -1,5 +1,5 @@
-class Api::CommentsController < ApplicationController
-  before_action :correct_user, only: [:show]
+class Api::UsersController < ApplicationController
+  before_action :correct_user
 
   def show
     @user = User.find(params[:id])
@@ -8,11 +8,11 @@ class Api::CommentsController < ApplicationController
     @followings = @user.followings.order(id: :desc)
     @followers = @user.followers.order(id: :desc)
     render json: {
-      user: user,
-      recipes: recipes,
-      folders: folders,
-      followings: followings,
-      followers: followers
+      user: @user,
+      recipes: @recipes,
+      folders: @folders,
+      followings: @followings,
+      followers: @followers
     }, status: :ok
   end
 
@@ -20,17 +20,17 @@ class Api::CommentsController < ApplicationController
     @user = User.find(params[:id])
     @followings = @user.followings.order(id: :desc)
     render json: {
-      user: user,
-      followings: followings,
+      user: @user,
+      followings: @followings,
     }, status: :ok
   end
 
   def followers
     @user = User.find(params[:id])
-    @followiers = @user.followiers.order(id: :desc)
+    @followers = @user.followers.order(id: :desc)
     render json: {
-      user: user,
-      followiers: followiers,
+      user: @user,
+      followers: @followers,
     }, status: :ok
   end
 
@@ -38,8 +38,8 @@ class Api::CommentsController < ApplicationController
     @user = User.find(params[:id])
     @folders = @user.folders.order(id: :desc)
     render json: {
-      user: user,
-      folders: folders,
+      user: @user,
+      folders: @folders,
     }, status: :ok
   end
 
@@ -47,15 +47,24 @@ class Api::CommentsController < ApplicationController
     @user = User.find(params[:id])
     @folders = @user.folders.order(id: :desc)
     render json: {
-      user: user,
-      folders: folders,
+      user: @user,
+      folders: @folders,
     }, status: :ok
   end
+
+  # def favorite_recipes
+  #   @user = User.find(params[:id])
+  #   @favorite_recipes = @user.favorite_recipes.order(id: :desc)
+  #   render json: {
+  #     user: @user,
+  #     favorite_recipes: @favorite_recipes,
+  #   }, status: :ok
+  # end
 
   private
 
   def correct_user
     @user = User.find(params[:id])
-    redirect_to root_url unless @user == current_user
+    redirect_to api_root_url unless @user == current_api_user
   end
 end
