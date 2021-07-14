@@ -52,3 +52,7 @@ gem 'pry-byebug', group: :development
 # image
 gem 'carrierwave'
 gem 'rmagick'
+
+# Easy to see console
+gem 'pry-rails'
+gem 'awesome_rails_console'

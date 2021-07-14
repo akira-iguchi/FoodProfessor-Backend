@@ -1,4 +1,6 @@
 class Api::CommentsController < ApplicationController
+  before_action :correct_user, only: [:show]
+
   def show
     @user = User.find(params[:id])
     @recipes = @user.recipes.order(id: :desc)
@@ -11,6 +13,42 @@ class Api::CommentsController < ApplicationController
       folders: folders,
       followings: followings,
       followers: followers
+    }, status: :ok
+  end
+
+  def followings
+    @user = User.find(params[:id])
+    @followings = @user.followings.order(id: :desc)
+    render json: {
+      user: user,
+      followings: followings,
+    }, status: :ok
+  end
+
+  def followers
+    @user = User.find(params[:id])
+    @followiers = @user.followiers.order(id: :desc)
+    render json: {
+      user: user,
+      followiers: followiers,
+    }, status: :ok
+  end
+
+  def folders
+    @user = User.find(params[:id])
+    @folders = @user.folders.order(id: :desc)
+    render json: {
+      user: user,
+      folders: folders,
+    }, status: :ok
+  end
+
+  def folders
+    @user = User.find(params[:id])
+    @folders = @user.folders.order(id: :desc)
+    render json: {
+      user: user,
+      folders: folders,
     }, status: :ok
   end
 
