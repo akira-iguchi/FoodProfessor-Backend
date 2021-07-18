@@ -1,15 +1,19 @@
 class Api::CommentsController < ApplicationController
   before_action :authenticate_user
 
-  def create
+  def follow
     @user = User.find(params[:id])
-    current_user.follow(@user)
-    render json: {}, status: :ok
+    current_api_user.follow(@user)
+    render json: {
+      user: @user
+    }, status: :ok
   end
 
-  def destroy
+  def unfollow
     @user = User.find(params[:id])
-    current_user.unfollow(@user)
-    render json: {}, status: :ok
+    current_api_user.unfollow(@user)
+    render json: {
+      user: @user
+    }, status: :ok
   end
 end

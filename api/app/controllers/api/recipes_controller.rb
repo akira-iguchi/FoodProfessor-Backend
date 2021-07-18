@@ -4,7 +4,7 @@ class Api::RecipesController < ApplicationController
   before_action :correct_user, only: []
 
   def create
-    @recipe = current_user.recipes.build(recipe_params)
+    @recipe = current_api_user.recipes.build(recipe_params)
     # 作成成功の可否でjsonを変更
     if @recipe.save
         render json: {
@@ -29,7 +29,7 @@ class Api::RecipesController < ApplicationController
   end
 
   def correct_user
-    @recipe = current_user.recipes.find(params[:id])
-    redirect_to root_url unless @recipe
+    @recipe = current_api_user.recipes.find(params[:id])
+    redirect_to api_root_url unless @recipe
   end
 end

@@ -17,11 +17,10 @@ Rails.application.routes.draw do
       member do
         get :followings
         get :followers
-        get :folders
       end
     end
 
-    resources :follows, only: %i[create destroy]
+    resources :follows, only: %i[follow unfollow]
 
     resources :recipes, only: [:show]
 

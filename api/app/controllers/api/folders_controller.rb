@@ -1,9 +1,9 @@
 class Api::FoldersController < ApplicationController
-  before_action :authenticate_user
+  # before_action :authenticate_user
   before_action :correct_user, only: [:destroy]
 
   def create
-    @folder = current_user.folders.build(folder_params)
+    @folder = current_api_user.folders.build(folder_params)
     if @folder.save
       render json: {
         folder: @folder
@@ -37,7 +37,7 @@ class Api::FoldersController < ApplicationController
   end
 
   def correct_user
-    @folder = current_user.folders.find(params[:id])
-    redirect_to root_url unless @folder
+    @folder = current_api_user.folders.find(params[:id])
+    redirect_to api_root_url unless @folder
   end
 end

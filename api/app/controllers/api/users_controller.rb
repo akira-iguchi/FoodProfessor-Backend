@@ -5,14 +5,10 @@ class Api::UsersController < ApplicationController
     @user = User.find(params[:id])
     @recipes = @user.recipes.order(id: :desc)
     @folders = @user.folders.order(id: :desc)
-    @followings = @user.followings.order(id: :desc)
-    @followers = @user.followers.order(id: :desc)
     render json: {
       user: @user,
       recipes: @recipes,
       folders: @folders,
-      followings: @followings,
-      followers: @followers
     }, status: :ok
   end
 
@@ -31,24 +27,6 @@ class Api::UsersController < ApplicationController
     render json: {
       user: @user,
       followers: @followers,
-    }, status: :ok
-  end
-
-  def folders
-    @user = User.find(params[:id])
-    @folders = @user.folders.order(id: :desc)
-    render json: {
-      user: @user,
-      folders: @folders,
-    }, status: :ok
-  end
-
-  def folders
-    @user = User.find(params[:id])
-    @folders = @user.folders.order(id: :desc)
-    render json: {
-      user: @user,
-      folders: @folders,
     }, status: :ok
   end
 

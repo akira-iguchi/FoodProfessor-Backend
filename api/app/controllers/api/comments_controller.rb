@@ -3,7 +3,7 @@ class Api::CommentsController < ApplicationController
   before_action :correct_user, only: [:destroy]
 
   def create
-    @comment = current_user.comments.build(comment_params)
+    @comment = current_api_user.comments.build(comment_params)
     @recipe = Recipe.find(params[:spot_id])
     @comment.spot_id = @recipe.id
     if @comment.save
@@ -27,7 +27,7 @@ class Api::CommentsController < ApplicationController
   end
 
   def correct_user
-    @comment = current_user.comments.find(params[:id])
-    redirect_to root_url unless @comment
+    @comment = current_api_user.comments.find(params[:id])
+    redirect_to api_root_url unless @comment
   end
 end
