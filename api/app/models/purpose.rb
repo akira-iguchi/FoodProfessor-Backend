@@ -7,5 +7,4 @@ class Purpose < ApplicationRecord
   validates :purpose_name, { presence: true, length: { maximum: 50 } }
   validates :purpose_content, length: { maximum: 200 }
   validates :purpose_for_people, numericality: { greater_than: 0, only_integer: true }, allow_blank: true
-  validates :purpose_time, numericality: { greater_than: 0, only_integer: true }, allow_blank: true
 end

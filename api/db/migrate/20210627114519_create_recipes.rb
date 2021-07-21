@@ -3,6 +3,7 @@ class CreateRecipes < ActiveRecord::Migration[6.1]
     create_table :recipes do |t|
       t.string :recipe_name,    null: false
       t.string :recipe_image
+      t.integer :recipe_time
       t.references :user,       foreign_key: true, null: false
       t.references :folder,     foreign_key: true, null: false
 
