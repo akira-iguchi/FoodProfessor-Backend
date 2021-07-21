@@ -10,4 +10,5 @@ class Recipe < ApplicationRecord
   validates :user_id, presence: true
   validates :folder_id, presence: true
   validates :recipe_name, { presence: true, length: { maximum: 50 } }
+  validates :recipe_time, numericality: { greater_than: 0, only_integer: true }, allow_blank: true
 end
