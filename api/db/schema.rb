@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(version: 2021_06_29_141720) do
     t.string "first_name", default: "", null: false
     t.string "last_name", default: "", null: false
     t.string "email", default: "", null: false
-    t.string "profile_image", default: ""
+    t.string "profile_image"
     t.text "tokens"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
