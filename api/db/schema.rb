@@ -31,14 +31,6 @@ ActiveRecord::Schema.define(version: 2021_06_29_141720) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "folders", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "folder_name", null: false
-    t.bigint "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_folders_on_user_id"
-  end
-
   create_table "follows", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "follower_id", null: false
     t.integer "followed_id", null: false
@@ -52,30 +44,20 @@ ActiveRecord::Schema.define(version: 2021_06_29_141720) do
   create_table "ingredients", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "ingredient_name", null: false
     t.float "quantity", null: false
-    t.bigint "purpose_id", null: false
+    t.bigint "recipe_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["purpose_id"], name: "index_ingredients_on_purpose_id"
+    t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
   end
 
   create_table "procedures", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "procedure_content", null: false
     t.integer "order", null: false
     t.string "procedure_image"
-    t.bigint "purpose_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["purpose_id"], name: "index_procedures_on_purpose_id"
-  end
-
-  create_table "purposes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "purpose_name", null: false
-    t.text "purpose_content"
-    t.integer "purpose_for_people", default: 1
     t.bigint "recipe_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["recipe_id"], name: "index_purposes_on_recipe_id"
+    t.index ["recipe_id"], name: "index_procedures_on_recipe_id"
   end
 
   create_table "recipe_category_relations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -92,10 +74,8 @@ ActiveRecord::Schema.define(version: 2021_06_29_141720) do
     t.string "recipe_image"
     t.integer "recipe_time"
     t.bigint "user_id", null: false
-    t.bigint "folder_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["folder_id"], name: "index_recipes_on_folder_id"
     t.index ["user_id"], name: "index_recipes_on_user_id"
   end
 
@@ -126,12 +106,9 @@ ActiveRecord::Schema.define(version: 2021_06_29_141720) do
 
   add_foreign_key "comments", "recipes"
   add_foreign_key "comments", "users"
-  add_foreign_key "folders", "users"
-  add_foreign_key "ingredients", "purposes"
-  add_foreign_key "procedures", "purposes"
-  add_foreign_key "purposes", "recipes"
+  add_foreign_key "ingredients", "recipes"
+  add_foreign_key "procedures", "recipes"
   add_foreign_key "recipe_category_relations", "categories"
   add_foreign_key "recipe_category_relations", "recipes"
-  add_foreign_key "recipes", "folders"
   add_foreign_key "recipes", "users"
 end

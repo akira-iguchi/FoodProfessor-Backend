@@ -20,7 +20,6 @@ class User < ApplicationRecord
   has_many :followings, through: :relationship, source: :followed
   has_many :reverses_of_relationship, class_name: 'Follow', foreign_key: 'followed_id', dependent: :destroy
   has_many :followers, through: :reverses_of_relationship, source: :follower
-  has_many :folders, dependent: :destroy
   has_many :recipes, dependent: :destroy
   has_many :comments, dependent: :destroy
 

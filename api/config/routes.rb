@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   namespace :api do
-    root 'top#index'
+    resources :top, only: %i[index]
 
     mount_devise_token_auth_for 'User', at: 'auth', controllers: {
       registrations: 'api/auth/registrations',
@@ -12,7 +12,6 @@ Rails.application.routes.draw do
     end
 
     resources :users, only: %i[show] do
-      resources :folders, only: %i[create update destroy]
       resources :comments, only: %i[create destroy]
       member do
         get :followings

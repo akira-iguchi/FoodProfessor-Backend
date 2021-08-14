@@ -1,14 +1,12 @@
 class Api::UsersController < ApplicationController
-  before_action :correct_user
+  # before_action :correct_user
 
   def show
     @user = User.find(params[:id])
     @recipes = @user.recipes.order(id: :desc)
-    @folders = @user.folders.order(id: :desc)
     render json: {
       user: @user,
       recipes: @recipes,
-      folders: @folders,
     }, status: :ok
   end
 
@@ -43,6 +41,6 @@ class Api::UsersController < ApplicationController
 
   def correct_user
     @user = User.find(params[:id])
-    redirect_to api_root_url unless @user == current_api_user
+    redirect_to api_top_index unless @user == current_api_user
   end
 end

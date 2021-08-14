@@ -25,11 +25,11 @@ class Api::RecipesController < ApplicationController
   private
 
   def recipe_params
-    params.require(:recipe).permit(:recipe_name, :recipe_image, :folder_id)
+    params.require(:recipe).permit(:recipe_name, :recipe_image)
   end
 
   def correct_user
     @recipe = current_api_user.recipes.find(params[:id])
-    redirect_to api_root_url unless @recipe
+    redirect_to api_top_index unless @recipe
   end
 end

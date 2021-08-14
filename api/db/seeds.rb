@@ -21,18 +21,37 @@ Follow.create!(
   followed_id: @user2.id,
 )
 
-# folder
-@folder = Folder.create!(
-  folder_name: '夕食',
-  user_id: @user1.id
-)
-
 # recipe
 @recipe = Recipe.create!(
   recipe_name: '肉じゃが',
   recipe_time: 10,
-  folder_id: @folder.id,
   user_id: @user1.id
+)
+
+# ingredient
+Ingredient.create!(
+  ingredient_name: 'じゃがいも',
+  quantity: 2,
+  recipe_id: @recipe.id
+)
+
+Ingredient.create!(
+  ingredient_name: 'にんじん',
+  quantity: 1,
+  recipe_id: @recipe.id
+)
+
+# procedure
+Procedure.create!(
+  procedure_content: '野菜を切る',
+  order: 1,
+  recipe_id: @recipe.id
+)
+
+Procedure.create!(
+  procedure_content: '野菜を茹でる',
+  order: 2,
+  recipe_id: @recipe.id
 )
 
 # category
@@ -44,40 +63,6 @@ Follow.create!(
 RecipeCategoryRelation.create!(
   category_id: @category.id,
   recipe_id: @recipe.id
-)
-
-# purpose
-@purpose = Purpose.create!(
-  purpose_name: 'すぐ作れる',
-  purpose_content: '忙しいように',
-  purpose_for_people: 1,
-  recipe_id: @recipe.id
-)
-
-# ingredient
-Ingredient.create!(
-  ingredient_name: 'じゃがいも',
-  quantity: 2,
-  purpose_id: @purpose.id
-)
-
-Ingredient.create!(
-  ingredient_name: 'にんじん',
-  quantity: 1,
-  purpose_id: @purpose.id
-)
-
-# procedure
-Procedure.create!(
-  procedure_content: '野菜を切る',
-  order: 1,
-  purpose_id: @purpose.id
-)
-
-Procedure.create!(
-  procedure_content: '野菜を茹でる',
-  order: 2,
-  purpose_id: @purpose.id
 )
 
 # comment

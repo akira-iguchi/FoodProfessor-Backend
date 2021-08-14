@@ -4,7 +4,7 @@ class CreateProcedures < ActiveRecord::Migration[6.1]
       t.text :procedure_content,        null: false
       t.integer :order,                 null: false
       t.string :procedure_image
-      t.references :purpose,            foreign_key: true, null: false
+      t.references :recipe,            foreign_key: true, null: false
 
       t.timestamps
     end
