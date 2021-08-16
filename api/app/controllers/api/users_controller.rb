@@ -1,46 +1,36 @@
 class Api::UsersController < ApplicationController
-  # before_action :correct_user
-
   def show
     @user = User.find(params[:id])
     @recipes = @user.recipes.order(id: :desc)
+    @favorite_recipes = @user.favorite_recipes.order(id: :desc)
     render json: {
       user: @user,
       recipes: @recipes,
+      favorite_recipes: @favorite_recipes,
     }, status: :ok
   end
 
-  def followings
+  def edit
     @user = User.find(params[:id])
-    @followings = @user.followings.order(id: :desc)
     render json: {
       user: @user,
-      followings: @followings,
     }, status: :ok
   end
 
-  def followers
+  def update
     @user = User.find(params[:id])
-    @followers = @user.followers.order(id: :desc)
-    render json: {
-      user: @user,
-      followers: @followers,
-    }, status: :ok
+    if @user.update(update_params)
+        render json: {
+            user: @user
+        }, status: :created
+    else
+        render json: {}, status: :internal_server_error
+    end
   end
-
-  # def favorite_recipes
-  #   @user = User.find(params[:id])
-  #   @favorite_recipes = @user.favorite_recipes.order(id: :desc)
-  #   render json: {
-  #     user: @user,
-  #     favorite_recipes: @favorite_recipes,
-  #   }, status: :ok
-  # end
 
   private
 
-  def correct_user
-    @user = User.find(params[:id])
-    redirect_to api_top_index unless @user == current_api_user
+  def update_params
+    params.require(:user).permit(:email, :first_name, :last_name, :profile_image)
   end
 end

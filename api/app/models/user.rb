@@ -21,6 +21,10 @@ class User < ApplicationRecord
   has_many :reverses_of_relationship, class_name: 'Follow', foreign_key: 'followed_id', dependent: :destroy
   has_many :followers, through: :reverses_of_relationship, source: :follower
   has_many :recipes, dependent: :destroy
+
+  has_many :favorites, dependent: :destroy
+  has_many :favorite_recipes, through: :favorites, source: :recipe
+
   has_many :comments, dependent: :destroy
 
   def follow(other_user)
@@ -33,5 +37,18 @@ class User < ApplicationRecord
 
   def following?(other_user)
     followings.include?(other_user)
+  end
+
+  def favorite(recipe)
+    favorites.find_or_create_by(recipe_id: recipe.id)
+  end
+
+  def unfavorite(recipe)
+    favorite = favorites.find_by(recipe_id: recipe.id)
+    favorite.destroy if favorite
+  end
+
+  def favorite?(recipe)
+    favorite_recipes.include?(recipe)
   end
 end

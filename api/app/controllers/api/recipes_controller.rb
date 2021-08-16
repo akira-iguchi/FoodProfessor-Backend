@@ -30,6 +30,6 @@ class Api::RecipesController < ApplicationController
 
   def correct_user
     @recipe = current_api_user.recipes.find(params[:id])
-    redirect_to api_top_index unless @recipe
+    redirect_to api_top_index_path unless @recipe
   end
 end

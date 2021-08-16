@@ -28,6 +28,6 @@ class Api::CommentsController < ApplicationController
 
   def correct_user
     @comment = current_api_user.comments.find(params[:id])
-    redirect_to api_top_index unless @comment
+    redirect_to api_top_index_path unless @comment
   end
 end
