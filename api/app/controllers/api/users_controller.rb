@@ -20,6 +20,7 @@ class Api::UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(update_params)
+      # logger.debug "aaaaaaaaaaaaa hash: #{@user}"
         render json: {
             user: @user
         }, status: :created

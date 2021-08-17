@@ -24,6 +24,7 @@
 
 # Ignore uploaded files in development.
 /api/storage/*
+/api/public/uploads
 !/api/storage/.keep
 /api/.byebug_history
 

@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   namespace :api do
-    resources :top, only: %i[index]
+    resources :top, only: [:index]
 
     mount_devise_token_auth_for 'User', at: 'auth', controllers: {
       registrations: 'api/auth/registrations',
@@ -8,16 +8,16 @@ Rails.application.routes.draw do
     }
 
     namespace :auth do
-      resources :sessions, only: %i[index]
+      resources :sessions, only: [:index]
     end
 
-    resources :users, only: %i[show edit update] do
-      resources :comments, only: %i[create destroy]
+    resources :users, only: [:show, :edit, :update] do
+      resources :comments, only: [:create, :destroy]
     end
 
-    resources :follows, only: %i[follow unfollow]
+    resources :follows, only: [:follow, :unfollow]
 
-    resources :recipes, only: [:show]
+    resources :recipes, only: [:show, :create, :edit, :update, :destroy]
 
   end
 end
