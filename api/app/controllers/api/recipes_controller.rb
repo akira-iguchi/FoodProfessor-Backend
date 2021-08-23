@@ -1,15 +1,32 @@
 # routes.rbでnamespaceを"api"に設定 -> Api::
 class Api::RecipesController < ApplicationController
-  before_action :authenticate_user, only: [:create, :edit, :update, :destroy]
   before_action :correct_user, only: [:edit, :update]
 
   def show
   end
 
   def create
-    @recipe = current_api_user.recipes.build(recipe_params)
-    # 作成成功の可否でjsonを変更
+    @user = User.find(params[:current_user_id])
+    @recipe = @user.recipes.build(recipe_params)
     if @recipe.save
+        render json: {
+            recipe: @recipe
+        }, status: :created
+    else
+        render json: @recipe.errors, status: 422
+    end
+  end
+
+  def edit
+    @recipe = Recipe.find(params[:id])
+    render json: {
+      recipe: @recipe,
+    }, status: :ok
+  end
+
+  def update
+    @recipe = Recipe.find(params[:id])
+    if @recipe.update(update_recipe_params)
         render json: {
             recipe: @recipe
         }, status: :created
@@ -18,13 +35,8 @@ class Api::RecipesController < ApplicationController
     end
   end
 
-  def edit
-  end
-
-  def update
-  end
-
   def destroy
+    @recipe = Recipe.find(params[:id])
     @recipe.destroy
     render json: {}, status: :ok
   end
@@ -34,15 +46,23 @@ class Api::RecipesController < ApplicationController
   private
 
   def recipe_params
-    params.require(:recipe).permit(:recipe_name, :recipe_time, :recipe_image)
+    params.permit(
+      :recipe_name,
+      :recipe_time,
+      :recipe_image,
+      ingredient_attributes: [:ingredient_name, :quantity],
+      procedure_attributes: [:procedure_content, :order, :procedure_image]
+    )
   end
 
-  def ingredient_params
-    params.require(:ingredient).permit(:ingredient_name, :quantity)
-  end
-
-  def procedure_params
-    params.require(:procedure).permit(:procedure_content, :order, :procedure_image)
+  def update_recipe_params
+    params.require(:recipe).permit(
+      :recipe_name,
+      :recipe_time,
+      :recipe_image,
+      ingredient_attributes: [:ingredient_name, :quantity, :_destroy, :id],
+      procedure_attributes: [:procedure_content, :order, :procedure_image, :_destroy, :id]
+    )
   end
 
   def correct_user
