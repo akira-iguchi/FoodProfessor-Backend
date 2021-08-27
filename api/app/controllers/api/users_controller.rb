@@ -20,7 +20,6 @@ class Api::UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     if @user.update(update_params)
-      # logger.debug "aaaaaaaaaaaaa hash: #{@user}"
         render json: {
             user: @user
         }, status: :created
@@ -32,6 +31,6 @@ class Api::UsersController < ApplicationController
   private
 
   def update_params
-    params.require(:user).permit(:email, :first_name, :last_name, :profile_image)
+    params.permit(:email, :first_name, :last_name, :profile_image)
   end
 end

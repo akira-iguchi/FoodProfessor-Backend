@@ -31,7 +31,7 @@
 # Ignore master key for decrypting credentials and more.
 /api/config/master.key
 
-#/api/.env
+/api/.env
 
 /api/vendor
 
