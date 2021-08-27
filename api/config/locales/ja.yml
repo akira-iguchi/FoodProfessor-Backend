@@ -1,0 +1,45 @@
+ja:
+  time:
+    formats:
+      default: "%Y/%m/%d %H:%M"
+  views:
+    pagination:
+      first: "&laquo; 最初"
+      last: "最後 &raquo;"
+      previous: "&lsaquo; 前"
+      next: "次 &rsaquo;"
+      truncate: "..."
+
+  activemodel:
+    attributes:
+      session:
+        email: メールアドレス
+        password: パスワード
+
+  # activerecord:
+  #   models:
+  #     recipe: レシピ
+  #     comment: コメント
+  #     record: 記録
+  #   attributes:
+  #     user:
+  #       name: 名前
+  #       email: メールアドレス
+  #       password: パスワード
+  #       password_confirmation: パスワード確認
+
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      blank: "は１文字以上入力してください。"
+      carrierwave_processing_error: failed to be processed
+      carrierwave_integrity_error: is not of an allowed file type
+      carrierwave_download_error: could not be downloaded
+      extension_whitelist_error: "%{extension}ファイルは投稿できません。%{allowed_types}のみ投稿できます。"
+      extension_blacklist_error: "You are not allowed to upload %{extension} files, prohibited types: %{prohibited_types}"
+      content_type_whitelist_error: "You are not allowed to upload %{content_type} files, allowed types: %{allowed_types}"
+      content_type_blacklist_error: "You are not allowed to upload %{content_type} files"
+      rmagick_processing_error: "Failed to manipulate with rmagick, maybe it is not an image?"
+      mini_magick_processing_error: "Failed to manipulate with MiniMagick, maybe it is not an image? Original Error: %{e}"
+      min_size_error: "ファイルサイズは最小%{min_size}です。"
+      max_size_error: "ファイルサイズは最大%{max_size}です。"

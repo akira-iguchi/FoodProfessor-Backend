@@ -8,12 +8,23 @@ class Api::RecipesController < ApplicationController
   def create
     @user = User.find(params[:current_user_id])
     @recipe = @user.recipes.build(recipe_params)
-    if @recipe.save
-        render json: {
-            recipe: @recipe
-        }, status: :created
+    if @recipe.save       # recipeをsaveしてから、ingredientとprocedureにrecipe_idを付与(recipeが保存されないとidがない)
+      @ingredient = @recipe.ingredients.build(ingredient_params)
+      @procedure = @recipe.procedures.build(procedure_params)
+
+      if @ingredient.save && @procedure.save
+        render json: {}, status: :created
+      else
+        render json: [
+          @recipe.errors,
+          @ingredient.errors,
+          @procedure.errors
+        ], status: 422
+      end
     else
-        render json: @recipe.errors, status: 422
+      render json: [
+        @recipe.errors,
+      ], status: 422
     end
   end
 
@@ -49,10 +60,16 @@ class Api::RecipesController < ApplicationController
     params.permit(
       :recipe_name,
       :recipe_time,
-      :recipe_image,
-      ingredient_attributes: [:ingredient_name, :quantity],
-      procedure_attributes: [:procedure_content, :order, :procedure_image]
+      :recipe_image
     )
+  end
+
+  def ingredient_params
+    params.permit(:ingredient_name, :quantity)
+  end
+
+  def procedure_params
+    params.permit(:procedure_content, :order, :procedure_image)
   end
 
   def update_recipe_params

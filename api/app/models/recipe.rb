@@ -6,9 +6,6 @@ class Recipe < ApplicationRecord
   has_many :favorites, dependent: :destroy
   has_many :comments, dependent: :destroy
 
-  accepts_nested_attributes_for :ingredients, allow_destroy: true
-  accepts_nested_attributes_for :procedures, allow_destroy: true
-
   mount_uploader :recipe_image, ImageUploader
 
   validates :user_id, presence: true
