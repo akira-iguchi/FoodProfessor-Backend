@@ -24,7 +24,9 @@ class Api::UsersController < ApplicationController
             user: @user
         }, status: :created
     else
-        render json: {}, status: :internal_server_error
+        render json: [
+          @user.errors
+        ], status: 422
     end
   end
 

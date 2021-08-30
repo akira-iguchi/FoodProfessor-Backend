@@ -3,7 +3,6 @@ class CreateProcedures < ActiveRecord::Migration[6.1]
     create_table :procedures do |t|
       t.text :procedure_content,        null: false
       t.integer :order,                 null: false
-      t.string :procedure_image
       t.references :recipe,            foreign_key: true, null: false
 
       t.timestamps

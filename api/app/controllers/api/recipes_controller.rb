@@ -8,24 +8,26 @@ class Api::RecipesController < ApplicationController
   def create
     @user = User.find(params[:current_user_id])
     @recipe = @user.recipes.build(recipe_params)
-    if @recipe.save       # recipeをsaveしてから、ingredientとprocedureにrecipe_idを付与(recipeが保存されないとidがない)
-      @ingredient = @recipe.ingredients.build(ingredient_params)
-      @procedure = @recipe.procedures.build(procedure_params)
+    Recipe.transaction do  # transactionで失敗時に処理をすべてロールバックする
+        @recipe.save!       # recipeを保存してから、ingredientとprocedureにrecipe_idを付与(recipeが保存されないとidがない)
+        @ingredient = @recipe.ingredients.build(ingredient_params)
+        @procedure = @recipe.procedures.build(procedure_params)
 
-      if @ingredient.save && @procedure.save
-        render json: {}, status: :created
-      else
-        render json: [
-          @recipe.errors,
-          @ingredient.errors,
-          @procedure.errors
-        ], status: 422
-      end
-    else
-      render json: [
-        @recipe.errors,
-      ], status: 422
+        if @ingredient.save! && @procedure.save!
+          render json: {}, status: :created
+        else
+          render json: [
+            @recipe.errors,
+            @ingredient.errors,
+            @procedure.errors
+          ], status: 422
+        end
     end
+      render json: {}, status: :created
+    rescue => errors
+      render json: [
+        errors,
+      ], status: 422
   end
 
   def edit
@@ -52,6 +54,17 @@ class Api::RecipesController < ApplicationController
     render json: {}, status: :ok
   end
 
+  def search
+    @recipes = if params[:recipe_name] === 'none'
+              Recipe.all
+            else
+              Recipe.where(['recipe_name LIKE ?', "%#{params[:recipe_name]}%"]).order(id: :desc)
+            end
+    render json: {
+      search_recipes: @recipes
+    }, status: :ok
+  end
+
   # ---------------------------------------
 
   private
@@ -69,7 +82,7 @@ class Api::RecipesController < ApplicationController
   end
 
   def procedure_params
-    params.permit(:procedure_content, :order, :procedure_image)
+    params.permit(:procedure_content, :order)
   end
 
   def update_recipe_params
@@ -78,7 +91,7 @@ class Api::RecipesController < ApplicationController
       :recipe_time,
       :recipe_image,
       ingredient_attributes: [:ingredient_name, :quantity, :_destroy, :id],
-      procedure_attributes: [:procedure_content, :order, :procedure_image, :_destroy, :id]
+      procedure_attributes: [:procedure_content, :order, :_destroy, :id]
     )
   end
 
