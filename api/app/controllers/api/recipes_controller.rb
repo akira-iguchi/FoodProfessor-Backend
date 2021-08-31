@@ -3,6 +3,16 @@ class Api::RecipesController < ApplicationController
   before_action :correct_user, only: [:edit, :update]
 
   def show
+    @recipe = Recipe.find(params[:id])
+    @ingredients = @recipe.ingredients
+    @procedures = @recipe.procedures
+    @categories = @recipe.categories
+    render json: {
+      recipe: @recipe,
+      ingredients: @ingredients,
+      procedures: @procedures,
+      categories: @categories,
+    }, status: :ok
   end
 
   def create

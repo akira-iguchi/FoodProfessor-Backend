@@ -31,26 +31,24 @@ Follow.create!(
 # ingredient
 Ingredient.create!(
   ingredient_name: 'じゃがいも',
-  quantity: 2,
+  quantity: '２個',
   recipe_id: @recipe.id
 )
 
 Ingredient.create!(
   ingredient_name: 'にんじん',
-  quantity: 1,
+  quantity: '１個',
   recipe_id: @recipe.id
 )
 
 # procedure
 Procedure.create!(
   procedure_content: '野菜を切る',
-  order: 1,
   recipe_id: @recipe.id
 )
 
 Procedure.create!(
   procedure_content: '野菜を茹でる',
-  order: 2,
   recipe_id: @recipe.id
 )
 

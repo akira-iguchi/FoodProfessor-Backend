@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
     resources :follows, only: [:follow, :unfollow]
 
-    resources :recipes, only: [:create, :edit, :update, :destroy]
+    resources :recipes, only: [:show, :create, :edit, :update, :destroy]
 
     get '/ingredients/:ingredient_name/recipes', to: 'ingredients#recipes'
 
