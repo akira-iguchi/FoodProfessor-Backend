@@ -82,7 +82,7 @@ class Api::RecipesController < ApplicationController
   end
 
   def procedure_params
-    params.permit(:procedure_content, :order)
+    params.permit(:procedure_content)
   end
 
   def update_recipe_params
