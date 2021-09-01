@@ -2,15 +2,16 @@ class Api::CommentsController < ApplicationController
   before_action :correct_user, only: [:destroy]
 
   def create
-    @comment = current_api_user.comments.build(comment_params)
-    @recipe = Recipe.find(params[:spot_id])
-    @comment.spot_id = @recipe.id
+    @user = User.find(params[:current_user_id])
+    @comment = @user.comments.build(comment_params)
+    @recipe = Recipe.find(params[:recipe_id])
+    @comment.recipe_id = @recipe.id
     if @comment.save
       render json: {
         comment: @comment
       }, status: :created
     else
-      render json: {}, status: :internal_server_error
+      render json: [@comment.errors], status: 422
     end
   end
 
@@ -22,7 +23,7 @@ class Api::CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:comment_content, :comment_image)
+    params.permit(:comment_content, :comment_image)
   end
 
   def correct_user

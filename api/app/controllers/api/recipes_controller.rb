@@ -4,14 +4,18 @@ class Api::RecipesController < ApplicationController
 
   def show
     @recipe = Recipe.find(params[:id])
+    @user = @recipe.user
     @ingredients = @recipe.ingredients
     @procedures = @recipe.procedures
     @categories = @recipe.categories
+    @comments = @recipe.comments.includes(:user).order(id: :desc)
     render json: {
       recipe: @recipe,
+      user: @user,
       ingredients: @ingredients,
       procedures: @procedures,
       categories: @categories,
+      comments: @comments,
     }, status: :ok
   end
 

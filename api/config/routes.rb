@@ -10,13 +10,13 @@ Rails.application.routes.draw do
       resources :sessions, only: [:index]
     end
 
-    resources :users, only: [:show, :edit, :update] do
-      resources :comments, only: [:create, :destroy]
-    end
+    resources :users, only: [:show, :edit, :update]
 
     resources :follows, only: [:follow, :unfollow]
 
-    resources :recipes, only: [:show, :create, :edit, :update, :destroy]
+    resources :recipes, only: [:show, :create, :edit, :update, :destroy] do
+      resources :comments, only: [:create, :destroy]
+    end
 
     get '/ingredients/:ingredient_name/recipes', to: 'ingredients#recipes'
 
