@@ -8,7 +8,10 @@ class Api::RecipesController < ApplicationController
     @ingredients = @recipe.ingredients
     @procedures = @recipe.procedures
     @categories = @recipe.categories
-    @comments = @recipe.comments.includes(:user).order(id: :desc)
+    @comments = @recipe.comments.order(id: :desc)
+    # コメントの投稿者がinclude等で取得できないので、ユーザーを全て取得してからフロントで処理
+    @comment_users = User.all
+    @favorites = @recipe.favorites
     render json: {
       recipe: @recipe,
       user: @user,
@@ -16,6 +19,8 @@ class Api::RecipesController < ApplicationController
       procedures: @procedures,
       categories: @categories,
       comments: @comments,
+      comment_users: @comment_users,
+      favorites: @favorites
     }, status: :ok
   end
 

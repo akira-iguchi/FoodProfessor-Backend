@@ -15,12 +15,6 @@
   password_confirmation: 'test456'
 )
 
-# follow
-Follow.create!(
-  follower_id: @user1.id,
-  followed_id: @user2.id,
-)
-
 # recipe
 @recipe = Recipe.create!(
   recipe_name: '肉じゃが',

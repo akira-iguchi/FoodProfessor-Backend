@@ -16,28 +16,12 @@ class User < ApplicationRecord
                     format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i },
                     uniqueness: { case_sensitive: false }
 
-  has_many :relationship, class_name: 'Follow', foreign_key: 'follower_id', dependent: :destroy
-  has_many :followings, through: :relationship, source: :followed
-  has_many :reverses_of_relationship, class_name: 'Follow', foreign_key: 'followed_id', dependent: :destroy
-  has_many :followers, through: :reverses_of_relationship, source: :follower
   has_many :recipes, dependent: :destroy
 
   has_many :favorites, dependent: :destroy
   has_many :favorite_recipes, through: :favorites, source: :recipe
 
   has_many :comments, dependent: :destroy
-
-  def follow(other_user)
-    relationship.create(followed_id: other_user.id) unless self == other_user
-  end
-
-  def unfollow(other_user)
-    relationship.find_by(followed_id: other_user.id).destroy if relationship
-  end
-
-  def following?(other_user)
-    followings.include?(other_user)
-  end
 
   def favorite(recipe)
     favorites.find_or_create_by(recipe_id: recipe.id)
