@@ -63,3 +63,9 @@ Comment.create!(
   user_id: @user1.id,
   recipe_id: @recipe.id
 )
+
+# favorite
+Favorite.create!(
+  user_id: @user1.id,
+  recipe_id: @recipe.id
+)

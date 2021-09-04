@@ -16,6 +16,10 @@ Rails.application.routes.draw do
       resources :comments, only: [:create, :destroy]
     end
 
+    resources :favorites, only: [:create]
+
+    delete '/favorites/:recipe_id/users/:current_user_id', to: 'favorites#destroy'
+
     get '/ingredients/:ingredient_name/recipes', to: 'ingredients#recipes'
 
     get '/categories/:category_name/recipes', to: 'categories#recipes'
