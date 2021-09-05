@@ -1,7 +1,5 @@
 # routes.rbでnamespaceを"api"に設定 -> Api::
 class Api::RecipesController < ApplicationController
-  before_action :correct_user, only: [:edit, :update]
-
   def show
     @recipe = Recipe.find(params[:id])
     @user = @recipe.user
@@ -33,19 +31,19 @@ class Api::RecipesController < ApplicationController
     Recipe.transaction do  # transactionで失敗時に処理をすべてロールバックする
       @recipe.save!       # recipeを保存してから、ingredientとprocedureにrecipe_idを付与(recipeが保存されないとidがない)
       JSON.parse(params[:ingredient_params]).each do |ingredient_params|
-        Ingredient.transaction do
-          @ingredient = @recipe.ingredients.build(ingredient_params)
-          @ingredient.save!
-        end
+        @ingredient = @recipe.ingredients.build(ingredient_params)
+        @ingredient.save!
+      end
+      JSON.parse(params[:categories]).each do |category_name|
+        @category = Category.find_or_create_by!(category_name: category_name)
+        @category.recipe_relation(@recipe)
       end
       JSON.parse(params[:procedure_params]).each do |procedure_params|
-        Procedure.transaction do
-          @procedure = @recipe.procedures.build(procedure_params)
-          @procedure.save!
-        end
+        @procedure = @recipe.procedures.build(procedure_params)
+        @procedure.save!
       end
     end
-      render json: {}, status: :created
+      render json: {recipe: @recipe}, status: :created
     rescue => errors
       render json: [
         errors,
@@ -54,20 +52,45 @@ class Api::RecipesController < ApplicationController
 
   def edit
     @recipe = Recipe.find(params[:id])
+    # selectメソッドは「id: null」も付いていくるので、「as_json(:except => :id)」で除去
+    @ingredients = @recipe.ingredients.select(:ingredient_name, :quantity).as_json(:except => :id)
+    @procedures = @recipe.procedures.select(:procedure_content).as_json(:except => :id)
+    @categories = @recipe.categories.pluck(:category_name)
     render json: {
       recipe: @recipe,
+      ingredients: @ingredients,
+      procedures: @procedures,
+      categories: @categories,
     }, status: :ok
   end
 
   def update
+    @user = User.find(params[:current_user_id])
     @recipe = Recipe.find(params[:id])
-    if @recipe.update(update_recipe_params)
-        render json: {
-            recipe: @recipe
-        }, status: :created
-    else
-        render json: {}, status: :internal_server_error
+    Recipe.transaction do  # transactionで失敗時に処理をすべてロールバックする
+      @recipe.update!(recipe_params)       # recipeを保存してから、ingredientとprocedureにrecipe_idを付与(recipeが保存されないとidがない)
+      # 子テーブル削除
+      @recipe.ingredients.destroy_all
+      @recipe.recipe_category_relations.destroy_all
+      @recipe.procedures.destroy_all
+      JSON.parse(params[:ingredient_params]).each do |ingredient_params|
+        @ingredient = @recipe.ingredients.build(ingredient_params)
+        @ingredient.save!
+      end
+      JSON.parse(params[:categories]).each do |category_name|
+        @category = Category.find_or_create_by!(category_name: category_name)
+        @category.recipe_relation(@recipe)
+      end
+      JSON.parse(params[:procedure_params]).each do |procedure_params|
+        @procedure = @recipe.procedures.build(procedure_params)
+        @procedure.save!
+      end
     end
+      render json: {recipe: @recipe}, status: :created
+    rescue => errors
+      render json: [
+        errors,
+      ], status: 422
   end
 
   def destroy
@@ -115,10 +138,5 @@ class Api::RecipesController < ApplicationController
       ingredient_attributes: [:ingredient_name, :quantity, :_destroy, :id],
       procedure_attributes: [:procedure_content, :order, :_destroy, :id]
     )
-  end
-
-  def correct_user
-    @recipe = current_api_user.recipes.find(params[:id])
-    redirect_to api_top_index_path unless @recipe
   end
 end

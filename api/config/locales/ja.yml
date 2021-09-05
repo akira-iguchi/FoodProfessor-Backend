@@ -27,6 +27,8 @@ ja:
       ingredient:
         ingredient_name: 材料名
         quantity: 量
+      category:
+        category_name: カテゴリ名
       procedure:
         procedure_content: 内容
 
