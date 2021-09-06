@@ -6,4 +6,9 @@ class Api::Auth::SessionsController < ApplicationController
       render json: { is_login: false, message: "ユーザーが存在しません" }
     end
   end
+
+  # def guest
+  #   @user = User.guest_login
+  #   render json: { user: @user }, status: :ok
+  # end
 end

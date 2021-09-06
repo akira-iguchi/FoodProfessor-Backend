@@ -6,7 +6,7 @@ class Api::CommentsController < ApplicationController
     @comment.recipe_id = @recipe.id
     if @comment.save
       render json: {
-        comment: @comment
+        comments: @recipe.comments.order(id: :desc)
       }, status: :created
     else
       render json: [@comment.errors], status: 422
@@ -14,9 +14,12 @@ class Api::CommentsController < ApplicationController
   end
 
   def destroy
+    @recipe = Recipe.find(params[:recipe_id])
     @comment = Comment.find(params[:id])
     @comment.destroy
-    render json: {}, status: :ok
+    render json: {
+      comments: @recipe.comments.order(id: :desc)
+    }, status: :ok
   end
 
   private
