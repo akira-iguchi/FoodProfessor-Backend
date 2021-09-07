@@ -16,23 +16,4 @@ class Api::UsersController < ApplicationController
       user: @user,
     }, status: :ok
   end
-
-  def update
-    @user = User.find(params[:id])
-    if @user.update(update_params)
-        render json: {
-            user: @user
-        }, status: :created
-    else
-        render json: [
-          @user.errors
-        ], status: 422
-    end
-  end
-
-  private
-
-  def update_params
-    params.permit(:email, :first_name, :last_name, :profile_image)
-  end
 end

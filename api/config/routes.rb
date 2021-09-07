@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     # # ゲストログイン（保留）
     # post '/auth/guest_login', to: 'auth/sessions#guest'
 
-    resources :users, only: [:show, :edit, :update]
+    resources :users, only: [:show, :edit]
 
     resources :recipes, only: [:show, :create, :edit, :update, :destroy] do
       resources :comments, only: [:create, :destroy]
