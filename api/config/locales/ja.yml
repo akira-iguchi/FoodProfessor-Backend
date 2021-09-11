@@ -23,6 +23,7 @@ ja:
       recipe:
         recipe_name: レシピ名
         recipe_time: 調理時間
+        for_how_many_people: 人数分
         recipe_image: レシピ画像
       ingredient:
         ingredient_name: 材料名

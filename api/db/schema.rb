@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(version: 2021_08_15_065355) do
     t.string "recipe_name", null: false
     t.string "recipe_image"
     t.integer "recipe_time", null: false
+    t.integer "for_how_many_people", null: false
     t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

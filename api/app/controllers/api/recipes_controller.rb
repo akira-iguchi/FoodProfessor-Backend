@@ -1,5 +1,7 @@
 # routes.rbでnamespaceを"api"に設定 -> Api::
 class Api::RecipesController < ApplicationController
+  include ActionController::Cookies
+
   def show
     @recipe = Recipe.find(params[:id])
     @user = @recipe.user
@@ -10,8 +12,7 @@ class Api::RecipesController < ApplicationController
     # コメントの投稿者がinclude等で取得できないので、ユーザーを全て取得してからフロントで処理
     @comment_users = User.all
     @favorite_users = @recipe.favorite_users
-    @user = User.find(1)
-    @is_favorite = @recipe.is_favorite?(@user)
+    @is_favorite = @recipe.is_favorite?(current_api_user)
     render json: {
       recipe: @recipe,
       user: @user,
@@ -118,6 +119,7 @@ class Api::RecipesController < ApplicationController
     params.permit(
       :recipe_name,
       :recipe_time,
+      :for_how_many_people,
       :recipe_image
     )
   end
@@ -128,15 +130,5 @@ class Api::RecipesController < ApplicationController
 
   def procedure_params
     params.permit(:procedure_content)
-  end
-
-  def update_recipe_params
-    params.require(:recipe).permit(
-      :recipe_name,
-      :recipe_time,
-      :recipe_image,
-      ingredient_attributes: [:ingredient_name, :quantity, :_destroy, :id],
-      procedure_attributes: [:procedure_content, :order, :_destroy, :id]
-    )
   end
 end

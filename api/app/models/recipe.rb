@@ -12,7 +12,8 @@ class Recipe < ApplicationRecord
 
   validates :user_id, presence: true
   validates :recipe_name, { presence: true, length: { maximum: 50 } }
-  validates :recipe_time, {presence: true, numericality: { greater_than: 0, only_integer: true }, allow_blank: true}
+  validates :recipe_time, {presence: true, numericality: { greater_than: 0, only_integer: true }}
+  validates :for_how_many_people, {presence: true, numericality: { greater_than: 0, only_integer: true }}
 
   def is_favorite?(user)
     favorite_users.include?(user)
